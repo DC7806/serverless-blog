@@ -9,7 +9,7 @@ module.exports.create = (event, _context, callback) => {
   const timestamp = new Date().getTime();
   const requestBody = JSON.parse(event.body);
 
-  if (typeof requestBody.title !== 'string' || typeof requestBody.body !== 'string') {
+  if (typeof requestBody.title !== 'string' || typeof requestBody.content !== 'string') {
     console.error('Failed to validate');
     callback(new Error('Attributes Type Error'));
     return;
@@ -20,7 +20,7 @@ module.exports.create = (event, _context, callback) => {
     Item: {
       id: uuid.v1(),
       title: requestBody.title,
-      body: requestBody.body,
+      content: requestBody.content,
       checked: false,
       createdAt: timestamp,
       updatedAt: timestamp
