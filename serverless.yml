@@ -78,6 +78,13 @@ functions:
           path: blogs/{id}
           method: put
           cors: true
+  delete:
+    handler: blogs/delete.delete
+    events:
+      - http:
+          path: blogs/{id}
+          method: delete
+          cors: true
 
 
 #    The following are a few example events you can configure
