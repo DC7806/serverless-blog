@@ -4,7 +4,6 @@ const AWS =  require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.update = (event, _context, callback) => {
-
   const timestamp = new Date().getTime()
   const requestId = event.pathParameters.id
   const requestBody = JSON.parse(event.body)
@@ -17,15 +16,18 @@ module.exports.update = (event, _context, callback) => {
 
   const params = {
     TableName: 'blogs',
-    Item: {
-      id: requestId,
-      title: requestBody.title,
-      content: requestBody.content,
-      updatedAt: timestamp
-    }
-  }
+    Key: {
+      id: requestId
+    },
+    ExpressionAttributeValues: {
+      ':title': requestBody.title,
+      ':content': requestBody.content,
+      ':updatedAt': timestamp
+    },
+    UpdateExpression: 'SET title = :title, content = :content, updatedAt = :updatedAt'
+  };
 
-  dynamoDb.put(params, (error, result) => {
+  dynamoDb.update(params, (error, result) => {
     if (error) {
       console.error(error);
       callback(new Error(`Something went wrong: ${error}`));
